@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import keyIcon from "./img/חולמים על בית/key Icon.svg";
 
 export type StageId = "dream" | "approval" | "existing" | "mortgage";
 
@@ -10,7 +11,7 @@ const STAGES: {
   { id: "dream", label: "חולמים על בית", icon: "/figma/nav-icon-dream.svg" },
   { id: "approval", label: "בקשת אישור עקרוני", icon: "/figma/nav-icon-approval.svg" },
   { id: "existing", label: "יש לי בקשה קיימת", icon: "/figma/nav-icon-existing.svg" },
-  { id: "mortgage", label: "יש לי כבר משכנתא", icon: "/figma/nav-icon-mortgage.svg" },
+  { id: "mortgage", label: "יש לי כבר משכנתא", icon: keyIcon },
 ];
 
 export function StageNav({

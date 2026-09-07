@@ -1,8 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { CtaButton } from "./CtaButton";
 import { Money } from "./Money";
 
-type CalcMode = "simple" | "complex";
 type Question = "monthly" | "afford";
 type AptType = "first" | "replace" | "extra";
 
@@ -90,7 +95,6 @@ function InfoLabel({ children }: { children: string }) {
 }
 
 export function Calculator() {
-  const [mode, setMode] = useState<CalcMode>("simple");
   const [question, setQuestion] = useState<Question>("monthly");
   const [apt, setApt] = useState<AptType>("first");
   const [amount, setAmount] = useState(DEFAULT.amount);
@@ -115,35 +119,7 @@ export function Calculator() {
       <h2>מה תרצו לבדוק היום?</h2>
 
       <div className="calc-mode">
-        <div className="calc-tabs" role="tablist" aria-label="סוג מחשבון">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "simple"}
-            className={`calc-tab${mode === "simple" ? " is-active" : ""}`}
-            onClick={() => setMode("simple")}
-          >
-            <span className="calc-tab-title">מחשבון פשוט</span>
-            <span>מזינים את מחיר הדירה ובודקים מה יהיה ההחזר החודשי</span>
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={mode === "complex"}
-            className={`calc-tab${mode === "complex" ? " is-active" : ""}`}
-            onClick={() => setMode("complex")}
-          >
-            <span className="calc-tab-title">מחשבון מורכב</span>
-            <span>מזינים את מחיר הדירה ובודקים מה יהיה ההחזר החודשי</span>
-          </button>
-        </div>
-
-        {mode === "complex" ? (
-          <div className="calc-placeholder" role="tabpanel">
-            <p>המחשבון המורכב יהיה זמין כאן בקרוב.</p>
-          </div>
-        ) : (
-          <div className="calc-card" role="tabpanel">
+        <div className="calc-card">
             <div className="calc-form">
               <p className="form-lead">
                 שנו את הנתונים וקבלו מיד הערכה להחזר החודשי:
@@ -289,13 +265,10 @@ export function Calculator() {
           <div className={`calc-result${showMonthlyFields ? "" : " is-dimmed"}`}>
             <div className="donut-wrap">
               <div className="donut-stage">
-                <Donut equityPct={result.equityPct} />
-                <div className="donut-label donut-label-equity">
-                  {result.equityPct}% הון עצמי
-                </div>
-                <div className="donut-label donut-label-finance">
-                  {result.financePct}% מימון
-                </div>
+                <Donut
+                  equityPct={result.equityPct}
+                  financePct={result.financePct}
+                />
                 <div className="donut-center">
                   <img
                     className="donut-home"
@@ -348,13 +321,18 @@ export function Calculator() {
             <CtaButton>בקשה לאישור עקרוני</CtaButton>
           </div>
         </div>
-        )}
       </div>
     </section>
   );
 }
 
-function Donut({ equityPct }: { equityPct: number }) {
+function Donut({
+  equityPct,
+  financePct,
+}: {
+  equityPct: number;
+  financePct: number;
+}) {
   const size = 518.11;
   const cx = size / 2;
   const cy = size / 2;
@@ -365,41 +343,69 @@ function Donut({ equityPct }: { equityPct: number }) {
   const blueR = outerR - blueStroke / 2;
   const blueC = 2 * Math.PI * blueR;
   const equityLen = (equityPct / 100) * blueC;
-  const arcCenterDeg = 321;
+  const startDeg = 276;
   const spanDeg = (equityPct / 100) * 360;
-  const startDeg = arcCenterDeg - spanDeg / 2;
+  const equityLabelDeg = startDeg + spanDeg / 2;
+  const financeLabelDeg = equityLabelDeg + 180;
+
+  const orbitStyle = (angle: number, radius: number) =>
+    ({
+      "--orbit-angle": `${angle}deg`,
+      "--orbit-counter-angle": `${-angle}deg`,
+      "--orbit-radius": `${radius}%`,
+    }) as CSSProperties;
 
   return (
-    <svg
-      className="donut-svg"
-      width={size}
-      height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      aria-hidden="true"
-    >
-      <circle
-        cx={cx}
-        cy={cy}
-        r={tealR}
-        fill="none"
-        stroke="#22AFB5"
-        strokeWidth={tealStroke}
-      />
-      <circle
-        className="donut-arc"
-        cx={cx}
-        cy={cy}
-        r={blueR}
-        fill="none"
-        stroke="#2F5EB1"
-        strokeWidth={blueStroke}
-        strokeLinecap="round"
-        style={{
-          strokeDasharray: `${equityLen} ${Math.max(blueC - equityLen, 0)}`,
-          transform: `rotate(${startDeg}deg)`,
-          transformOrigin: `${cx}px ${cy}px`,
-        }}
-      />
-    </svg>
+    <>
+      <svg
+        className="donut-svg"
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        aria-hidden="true"
+      >
+        <circle
+          cx={cx}
+          cy={cy}
+          r={tealR}
+          fill="none"
+          stroke="#22AFB5"
+          strokeWidth={tealStroke}
+        />
+        <circle
+          className="donut-arc"
+          cx={cx}
+          cy={cy}
+          r={blueR}
+          fill="none"
+          stroke="#2F5EB1"
+          strokeWidth={blueStroke}
+          strokeLinecap="round"
+          style={{
+            strokeDasharray: `${equityLen} ${Math.max(blueC - equityLen, 0)}`,
+            transform: `rotate(${startDeg}deg)`,
+            transformOrigin: `${cx}px ${cy}px`,
+          }}
+        />
+      </svg>
+
+      <div
+        className="donut-label-orbit"
+        style={orbitStyle(equityLabelDeg, 40.5)}
+      >
+        <div className="donut-label donut-label-equity">
+          {equityPct}% הון עצמי
+        </div>
+      </div>
+
+      <div
+        className="donut-label-orbit"
+        style={orbitStyle(financeLabelDeg, 34)}
+      >
+        <div className="donut-label donut-label-finance">
+          {financePct}% מימון
+        </div>
+      </div>
+    </>
   );
 }
