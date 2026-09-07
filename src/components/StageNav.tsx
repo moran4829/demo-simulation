@@ -1,5 +1,7 @@
-import type { CSSProperties } from "react";
-import keyIcon from "./img/חולמים על בית/key Icon.svg";
+import dreamIcon from "./img/חולמים על בית/Home Icon.svg";
+import existingIcon from "./img/חולמים על בית/natch Icon.svg";
+import approvalIcon from "./img/חולמים על בית/request Icon.svg";
+import mortgageIcon from "./img/key.svg";
 
 export type StageId = "dream" | "approval" | "existing" | "mortgage";
 
@@ -8,10 +10,10 @@ const STAGES: {
   label: string;
   icon: string;
 }[] = [
-  { id: "dream", label: "חולמים על בית", icon: "/figma/nav-icon-dream.svg" },
-  { id: "approval", label: "בקשת אישור עקרוני", icon: "/figma/nav-icon-approval.svg" },
-  { id: "existing", label: "יש לי בקשה קיימת", icon: "/figma/nav-icon-existing.svg" },
-  { id: "mortgage", label: "יש לי כבר משכנתא", icon: keyIcon },
+  { id: "dream", label: "חולמים על בית", icon: dreamIcon },
+  { id: "approval", label: "בקשת אישור עקרוני", icon: approvalIcon },
+  { id: "existing", label: "יש לי בקשה קיימת", icon: existingIcon },
+  { id: "mortgage", label: "יש לי כבר משכנתא", icon: mortgageIcon },
 ];
 
 export function StageNav({
@@ -22,7 +24,11 @@ export function StageNav({
   onChange: (id: StageId) => void;
 }) {
   return (
-    <nav className="stage-nav" aria-label="שלב בחיי המשכנתא">
+    <nav
+      className="stage-nav reveal-item reveal-delay-3"
+      data-reveal
+      aria-label="שלב בחיי המשכנתא"
+    >
       {STAGES.map((stage) => (
         <button
           key={stage.id}
@@ -30,11 +36,7 @@ export function StageNav({
           className={`stage-nav-item${active === stage.id ? " is-active" : ""}`}
           onClick={() => onChange(stage.id)}
         >
-          <span
-            className="stage-icon"
-            style={{ "--stage-icon": `url("${stage.icon}")` } as CSSProperties}
-            aria-hidden="true"
-          />
+          <img className="stage-icon" src={stage.icon} alt="" aria-hidden="true" />
           <span>{stage.label}</span>
         </button>
       ))}

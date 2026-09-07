@@ -1,6 +1,6 @@
 export function Header() {
   return (
-    <header className="site-header">
+    <header className="site-header reveal-item" data-reveal>
       <img
         className="poalim-logo"
         src="/figma/poalim-logo.svg"

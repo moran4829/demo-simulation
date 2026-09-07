@@ -9,7 +9,11 @@ export function Hero({
 }) {
   return (
     <section className="hero">
-      <div className="hero-art" aria-hidden="true">
+      <div
+        className="hero-art reveal-item reveal-delay-1"
+        data-reveal
+        aria-hidden="true"
+      >
         <img
           className="hero-dome"
           src="/figma/hero-full-transparent.png"
@@ -32,7 +36,7 @@ export function Hero({
           height={239}
         />
       </div>
-      <div className="hero-copy">
+      <div className="hero-copy reveal-item reveal-delay-2" data-reveal>
         <h1>איפה אתם בחיי המשכנתא?</h1>
         <p>בחרו את השלב שבו אתם נמצאים ואנחנו נלווה אתכם מכאן</p>
       </div>

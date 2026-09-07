@@ -26,7 +26,7 @@ const COPY: Record<
 export function StageIntro({ stage }: { stage: StageId }) {
   const copy = COPY[stage];
   return (
-    <section className="stage-intro">
+    <section className="stage-intro reveal-item" data-reveal>
       <h2>{copy.title}</h2>
       <span className="stage-intro-rule" />
       <p>{copy.body}</p>

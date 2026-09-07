@@ -96,6 +96,27 @@ img {
   max-width: 100%;
 }
 
+.reveal-item {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.reveal-item.is-revealed {
+  animation: reveal-rise 3s linear var(--reveal-delay, 0ms) both;
+}
+
+.reveal-delay-1 {
+  --reveal-delay: 80ms;
+}
+
+.reveal-delay-2 {
+  --reveal-delay: 160ms;
+}
+
+.reveal-delay-3 {
+  --reveal-delay: 240ms;
+}
+
 .page {
   overflow-x: hidden;
   background: var(--white);
@@ -208,10 +229,10 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(1299px, 100%);
-  height: 140px;
-  margin: 40px auto -70px;
-  padding: 0 207px;
+  width: min(993px, 100%);
+  height: 108px;
+  margin: 40px auto -54px;
+  padding: 0 53px;
   background: var(--white);
   border-radius: 99px;
   box-shadow: var(--shadow-l);
@@ -234,18 +255,11 @@ img {
   padding: 0;
 }
 
-.stage-nav-item img,
 .stage-icon {
   width: 48px;
   height: 48px;
   flex: 0 0 auto;
-}
-
-.stage-icon {
-  display: block;
-  background-color: currentColor;
-  -webkit-mask: var(--stage-icon) center / 48px 48px no-repeat;
-  mask: var(--stage-icon) center / 48px 48px no-repeat;
+  object-fit: contain;
 }
 
 .stage-nav-item.is-active {
@@ -1019,17 +1033,6 @@ img {
 }
 
 @media (max-width: 1200px) {
-  .stage-nav {
-    padding: 0 32px;
-    height: auto;
-    min-height: 120px;
-    gap: 12px;
-  }
-
-  .stage-nav-item {
-    font-size: 16px;
-  }
-
   .calculator-section {
     gap: 16px;
     padding-block: 16px;
@@ -1101,6 +1104,17 @@ img {
   }
 }
 
+@media (max-width: 900px) {
+  .stage-nav {
+    padding-inline: 24px;
+    gap: 12px;
+  }
+
+  .stage-nav-item {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 720px) {
   .site-header {
     padding: 0 16px;
@@ -1161,6 +1175,24 @@ img {
   }
 }
 
+@keyframes reveal-rise {
+  0%,
+  10% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  10% {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  26.67%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes choice-select {
   0% {
     transform: scale(0.96);
@@ -1185,6 +1217,13 @@ img {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .reveal-item,
+  .reveal-item.is-revealed {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {

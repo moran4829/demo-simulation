@@ -115,7 +115,11 @@ export function Calculator() {
   const showMonthlyFields = question === "monthly";
 
   return (
-    <section className="calculator-section" id="calculator">
+    <section
+      className="calculator-section reveal-item"
+      id="calculator"
+      data-reveal
+    >
       <h2>מה תרצו לבדוק היום?</h2>
 
       <div className="calc-mode">
